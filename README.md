@@ -18,8 +18,8 @@ Scope is locked to the assignment brief. Nothing added beyond it. This document 
 | **3** | **DNS Records** | ✅ **Completed** |
 | **4** | **Route53 UI** | ✅ **Completed** |
 | **5** | **Search/Filters/Pagination/UX** | ✅ **Completed** |
-| **6** | **Mocked Route53 Sections** | ⏳ **Next Up** |
-| **7** | **Polish/Security/Performance** | Pending |
+| **6** | **Mocked Route53 Sections** | ✅ **Completed** |
+| **7** | **Polish/Security/Performance** | ⏳ **Next Up** |
 | **8** | **Documentation** | Pending |
 | **9** | **Deployment** | Pending |
 
@@ -64,8 +64,11 @@ Scope is locked to the assignment brief. Nothing added beyond it. This document 
 - Integrated search, record type filtering, and pagination into Hosted Zone detail DNS Records view
 - Commit: `feat: add search and pagination`
 
-### PHASE 6 — Mocked Route53 Sections
-- Placeholder pages for Dashboard, Traffic Policies, Health Checks, Resolver, Profiles ("Coming Soon")
+### PHASE 6 — Mocked Route53 Sections (Completed)
+- Traffic Policies ("Coming Soon" preview with visual latency routing diagram)
+- Health Checks ("Coming Soon" preview with live endpoint status table)
+- Resolver ("Coming Soon" preview with inbound/outbound VPC endpoint cards)
+- Profiles ("Coming Soon" preview with multi-VPC policy distribution summary)
 - Commit: `feat: add mocked coming-soon sections`
 
 ### PHASE 7 — Polish / Security / Performance
