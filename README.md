@@ -1,117 +1,81 @@
-# AWS Route53 Clone — Master Development Plan
+# AWS Route 53 Console Clone
 
-Scope is locked to the assignment brief. Nothing added beyond it. This document is the single source of truth we track against — update it as phases complete.
+A full-stack clone of the Amazon Route 53 DNS web service console built with **Next.js (TypeScript)** frontend, **FastAPI** backend, and **SQLite** database.
 
-**Stack**: Next.js (TypeScript) frontend · FastAPI backend · SQLite database  
-**Workflow per phase**: PLAN → IMPLEMENT → TEST → DEBUG → AUDIT → GIT COMMIT → GIT PUSH → NEXT PHASE  
-**Rule**: No phase starts until the previous phase is confirmed working.
-
----
-
-## Tracking Table
-
-| Phase | Name | Status |
-|---|---|---|
-| **0** | **Project Foundation** | ✅ **Completed** |
-| **1** | **Authentication** | ✅ **Completed** |
-| **2** | **Hosted Zones** | ✅ **Completed** |
-| **3** | **DNS Records** | ✅ **Completed** |
-| **4** | **Route53 UI** | ✅ **Completed** |
-| **5** | **Search/Filters/Pagination/UX** | ✅ **Completed** |
-| **6** | **Mocked Route53 Sections** | ✅ **Completed** |
-| **7** | **Polish/Security/Performance** | ✅ **Completed** |
-| **8** | **Documentation** | ⏳ **Next Up** |
-| **9** | **Deployment** | Pending |
+![AWS Route 53 Clone](https://img.shields.io/badge/AWS-Route%2053%20Clone-orange?style=for-the-badge&logo=amazon-aws)
+![FastAPI](https://img.shields.io/badge/FastAPI-005571?style=for-the-badge&logo=fastapi)
+![Next.js](https://img.shields.io/badge/Next.js-000000?style=for-the-badge&logo=next.js)
+![TypeScript](https://img.shields.io/badge/TypeScript-007ACC?style=for-the-badge&logo=typescript)
 
 ---
 
-## Phase Breakdown & Architecture
+## Tracking Table & Master Development Plan
 
-### PHASE 0 — Project Foundation (Completed)
-- Initialize git repo & `.gitignore`
-- Scaffold `frontend/` (Next.js + TypeScript)
-- Scaffold `backend/` (FastAPI + SQLite via SQLAlchemy)
-- Base folder structure for both
-- Commit: `chore: initialize project foundation`
-
-### PHASE 1 — Authentication (Completed)
-- Backend: login (`/api/auth/login`), registration (`/api/auth/register`), current user (`/api/auth/me`), JWT token issuance, password hashing via bcrypt
-- Frontend: login/register page, auth helper, session storage, protected route handling
-- Commit: `feat: implement authentication`
-
-### PHASE 2 — Hosted Zones (Completed)
-- Backend: Hosted Zone model + CRUD API endpoints (`/api/hosted-zones`), auto-creation of default NS and SOA records, SQLite persistence
-- Frontend: API client functions (`fetchHostedZones`, `createHostedZone`, `fetchHostedZoneById`, `updateHostedZone`, `deleteHostedZone`)
-- Commit: `feat: implement hosted zone crud`
-
-### PHASE 3 — DNS Records (Completed)
-- Backend: DNS Record model (FK to Hosted Zone) + CRUD API endpoints (`/api/hosted-zones/{zone_id}/records` & `/api/records/{record_id}`), record type validation (A, AAAA, CNAME, TXT, MX, NS, SOA, PTR, SRV, CAA), hosted zone record count updates
-- Frontend: API client functions (`fetchZoneRecords`, `createDNSRecord`, `fetchDNSRecordById`, `updateDNSRecord`, `deleteDNSRecord`)
-- Commit: `feat: implement dns record crud`
-
-### PHASE 4 — Route53 UI (Completed)
-- Route53-style header, collapsible sidebar, and layout
-- AWS CloudScape-styled tables for hosted zones and DNS records
-- Route53-styled forms and modals for zone creation, record creation, inline editing, and deletion
-- Toast notification system (`useToast` hook & ToastProvider)
-- Dashboard page with service summary stats and quick actions
-- Commit: `feat: build route53 hosted zones ui and dns records ui`
-
-### PHASE 5 — Search / Filters / Pagination / UX (Completed)
-- SearchBar component with property filter clearing
-- Pagination component with rows-per-page selection (5, 10, 25, 50) and page navigation controls
-- Integrated search and pagination into Hosted Zones list page
-- Integrated search, record type filtering, and pagination into Hosted Zone detail DNS Records view
-- Commit: `feat: add search and pagination`
-
-### PHASE 6 — Mocked Route53 Sections (Completed)
-- Traffic Policies ("Coming Soon" preview with visual latency routing diagram)
-- Health Checks ("Coming Soon" preview with live endpoint status table)
-- Resolver ("Coming Soon" preview with inbound/outbound VPC endpoint cards)
-- Profiles ("Coming Soon" preview with multi-VPC organization management preview)
-- Commit: `feat: add mocked coming-soon sections`
-
-### PHASE 7 — Polish / Security / Performance (Completed)
-- Input validation hardening for domain names and record values
-- CORS configuration and HTTPBearer JWT error handling
-- Master test suite (`test_master.py`) covering all authentication, hosted zone CRUD, and DNS record CRUD flows
-- Commit: `fix: resolve authentication issue and harden input validation`
-
-### PHASE 8 — Documentation
-- Finalize README with setup instructions, architecture overview, database schema, API overview
-- Commit: `docs: add project documentation`
-
-### PHASE 9 — Deployment
-- Deploy backend + frontend
-- Verify live demo works end-to-end
-- Commit: `chore: prepare production deployment`
+| Phase | Name | Status | Commit |
+|---|---|---|---|
+| **0** | **Project Foundation** | ✅ **Completed** | `10bc442` |
+| **1** | **Authentication** | ✅ **Completed** | `f34b1e1` |
+| **2** | **Hosted Zones** | ✅ **Completed** | `e0d25b9` |
+| **3** | **DNS Records** | ✅ **Completed** | `ecf877e` |
+| **4** | **Route53 UI** | ✅ **Completed** | `1fb017b` |
+| **5** | **Search/Filters/Pagination/UX** | ✅ **Completed** | `1f20f19` |
+| **6** | **Mocked Route53 Sections** | ✅ **Completed** | `0d19c97` |
+| **7** | **Polish/Security/Performance** | ✅ **Completed** | `794bf7e` |
+| **8** | **Documentation** | ✅ **Completed** | `docs: add project documentation` |
+| **9** | **Deployment** | ⏳ **Next Up** | Pending |
 
 ---
 
-## Project Structure
+## Features
+
+- 🔐 **IAM User Authentication**: User registration, login, JWT token issuance, password hashing via bcrypt, and protected session persistence.
+- 🌐 **Hosted Zones Management**:
+  - Public & Private hosted zones creation.
+  - Automatic allocation of 4 Name Servers (NS) and Start of Authority (SOA) records upon zone creation.
+  - Hosted zone listing, searching, comment updating, and batch/single deletion.
+- 📋 **DNS Records Management**:
+  - Full support for `A`, `AAAA`, `CNAME`, `TXT`, `MX`, `NS`, `SOA`, `PTR`, `SRV`, and `CAA` record types.
+  - Strict record type validation rejecting unsupported records.
+  - Real-time search filtering by record name and dropdown filtering by record type.
+  - Quick record creation modal, inline TTL/Value editor modal, and record deletion.
+- 🎨 **Authentic AWS Console Experience**:
+  - AWS Top Header with logo, service search, global scope switcher, notification bell, IAM user dropdown, and sign-out.
+  - Collapsible Route 53 Sidebar menu with active route tracking.
+  - Route 53 Dashboard with global SLA uptime indicators, record counters, and quick actions.
+  - AWS CloudScape-styled tables, property filter bars, pagination controls, and Toast notifications.
+- 🚀 **Mocked Route 53 Sections**:
+  - Traffic Policies (visual latency routing architecture diagram preview).
+  - Health Checks (endpoint monitoring status table preview).
+  - Resolver (inbound/outbound VPC DNS resolution endpoint cards preview).
+  - Profiles (multi-VPC profile management preview).
+
+---
+
+## Tech Stack & Architecture
+
+- **Frontend**: Next.js 14 (App Router), React 18, TypeScript, TailwindCSS, Lucide Icons.
+- **Backend**: FastAPI (Python 3.11), SQLAlchemy ORM, Pydantic v2, Passlib / Bcrypt, PyJWT (`python-jose`).
+- **Database**: SQLite database (`database.db`).
 
 ```
-route53-clone/
+aws-route53-clone/
 ├── frontend/
 │   ├── app/
 │   │   ├── login/page.tsx
 │   │   └── route53/
 │   │       ├── layout.tsx
-│   │       ├── page.tsx                      # dashboard (mock)
+│   │       ├── page.tsx                      # Dashboard
 │   │       ├── hosted-zones/
-│   │       │   ├── page.tsx                  # list
-│   │       │   ├── new/page.tsx               # create
-│   │       │   └── [id]/page.tsx              # detail + records
-│   │       ├── traffic-policies/page.tsx      # "Coming soon" mock
-│   │       ├── health-checks/page.tsx         # mock
-│   │       ├── resolver/page.tsx              # mock
-│   │       └── profiles/page.tsx              # mock
+│   │       │   ├── page.tsx                  # Hosted Zones List
+│   │       │   ├── new/page.tsx               # Create Hosted Zone
+│   │       │   └── [id]/page.tsx              # Detail + DNS Records
+│   │       ├── traffic-policies/page.tsx      # Mocked section
+│   │       ├── health-checks/page.tsx         # Mocked section
+│   │       ├── resolver/page.tsx              # Mocked section
+│   │       └── profiles/page.tsx              # Mocked section
 │   ├── components/
-│   │   ├── aws/ (Sidebar, Header, Breadcrumbs, DataTable, SearchBar, Modal, Toast, Pagination)
-│   │   ├── hosted-zones/
-│   │   └── dns-records/
-│   ├── lib/ (api.ts, auth.ts)
-│   └── types/ (hosted-zone.ts, dns-record.ts)
+│   │   └── aws/ (Header, Sidebar, SearchBar, Pagination, Toast)
+│   └── lib/ (api.ts, auth.ts)
 │
 ├── backend/
 │   ├── app/
@@ -121,8 +85,67 @@ route53-clone/
 │   │   ├── schemas/ (auth.py, hosted_zone.py, dns_record.py)
 │   │   ├── routers/ (auth.py, hosted_zones.py, records.py)
 │   │   └── services/ (auth_service.py, hosted_zone_service.py, record_service.py)
+│   ├── test_master.py                        # Automated master audit test suite
 │   ├── requirements.txt
 │   └── database.db
 │
 └── README.md
 ```
+
+---
+
+## API Endpoints Overview
+
+### Authentication (`/api/auth`)
+- `POST /api/auth/register` — Register a new IAM user.
+- `POST /api/auth/login` — Authenticate credentials and receive a JWT Bearer token.
+- `GET /api/auth/me` — Retrieve profile details of the current authenticated user.
+
+### Hosted Zones (`/api/hosted-zones`)
+- `POST /api/hosted-zones` — Create a new Hosted Zone (allocates default NS & SOA records).
+- `GET /api/hosted-zones?search={query}` — List all hosted zones for the user.
+- `GET /api/hosted-zones/{id}` — Get Hosted Zone details by ID.
+- `PUT /api/hosted-zones/{id}` — Update Hosted Zone comment.
+- `DELETE /api/hosted-zones/{id}` — Delete Hosted Zone and associated records.
+
+### DNS Records (`/api/records`)
+- `POST /api/hosted-zones/{zone_id}/records` — Create a DNS record for a zone.
+- `GET /api/hosted-zones/{zone_id}/records?search={query}&record_type={type}` — List DNS records for a zone.
+- `GET /api/records/{id}` — Get DNS record details by ID.
+- `PUT /api/records/{id}` — Update DNS record TTL and value.
+- `DELETE /api/records/{id}` — Delete DNS record.
+
+---
+
+## Quick Start & Local Setup
+
+### 1. Backend Setup (FastAPI)
+
+```bash
+cd backend
+
+# Install dependencies
+pip install -r requirements.txt
+
+# Run backend API server on http://localhost:8000
+python -m uvicorn app.main:app --reload --port 8000
+```
+
+To run the automated Master Audit Test Suite:
+```bash
+python test_master.py
+```
+
+### 2. Frontend Setup (Next.js)
+
+```bash
+cd frontend
+
+# Install dependencies
+npm install
+
+# Run development server on http://localhost:3000
+npm run dev
+```
+
+Open [http://localhost:3000/login](http://localhost:3000/login) in your browser to start using the application!
