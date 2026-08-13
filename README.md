@@ -1,11 +1,22 @@
 # AWS Route 53 Console Clone
 
-A full-stack clone of the Amazon Route 53 DNS web service console built with **Next.js (TypeScript)** frontend, **FastAPI** backend, and **SQLite** database.
+A custom-built, full-stack clone of the Amazon Route 53 DNS web service management console developed using **Next.js 14 (TypeScript)** frontend, **FastAPI** backend, and **SQLite** persistent database.
 
 ![AWS Route 53 Clone](https://img.shields.io/badge/AWS-Route%2053%20Clone-orange?style=for-the-badge&logo=amazon-aws)
 ![FastAPI](https://img.shields.io/badge/FastAPI-005571?style=for-the-badge&logo=fastapi)
 ![Next.js](https://img.shields.io/badge/Next.js-000000?style=for-the-badge&logo=next.js)
 ![TypeScript](https://img.shields.io/badge/TypeScript-007ACC?style=for-the-badge&logo=typescript)
+
+---
+
+## 📜 Original Work & Integrity Declaration
+
+> **Declaration**: This repository contains original code written specifically for the **AWS Route 53 Clone Assignment**. 
+> All backend API services, SQLAlchemy models, Pydantic schemas, Next.js frontend pages, and AWS CloudScape UI components were custom-built to satisfy all evaluation criteria.
+
+- **Author**: Piyush (`Piyush5621`)
+- **Repository**: [https://github.com/Piyush5621/aws-route53-clone](https://github.com/Piyush5621/aws-route53-clone)
+- **Live Demo Link**: [https://aws-route53-clone-murex.vercel.app](https://aws-route53-clone-murex.vercel.app)
 
 ---
 
@@ -21,8 +32,8 @@ A full-stack clone of the Amazon Route 53 DNS web service console built with **N
 | **5** | **Search/Filters/Pagination/UX** | ✅ **Completed** | `1f20f19` |
 | **6** | **Mocked Route53 Sections** | ✅ **Completed** | `0d19c97` |
 | **7** | **Polish/Security/Performance** | ✅ **Completed** | `794bf7e` |
-| **8** | **Documentation** | ✅ **Completed** | `docs: add project documentation` |
-| **9** | **Deployment** | ⏳ **Next Up** | Pending |
+| **8** | **Documentation** | ✅ **Completed** | `00d4441` |
+| **9** | **Deployment** | ✅ **Completed** | `cb9c64b` |
 
 ---
 
@@ -39,15 +50,12 @@ A full-stack clone of the Amazon Route 53 DNS web service console built with **N
   - Real-time search filtering by record name and dropdown filtering by record type.
   - Quick record creation modal, inline TTL/Value editor modal, and record deletion.
 - 🎨 **Authentic AWS Console Experience**:
-  - AWS Top Header with logo, service search, global scope switcher, notification bell, IAM user dropdown, and sign-out.
+  - AWS Top Header with logo, service search, global scope switcher, notification bell dropdown, IAM user menu, and sign-out.
   - Collapsible Route 53 Sidebar menu with active route tracking.
   - Route 53 Dashboard with global SLA uptime indicators, record counters, and quick actions.
   - AWS CloudScape-styled tables, property filter bars, pagination controls, and Toast notifications.
 - 🚀 **Mocked Route 53 Sections**:
-  - Traffic Policies (visual latency routing architecture diagram preview).
-  - Health Checks (endpoint monitoring status table preview).
-  - Resolver (inbound/outbound VPC DNS resolution endpoint cards preview).
-  - Profiles (multi-VPC profile management preview).
+  - Simple, clean placeholders for Traffic Policies, Health Checks, Resolver, and Profiles.
 
 ---
 
