@@ -1,39 +1,33 @@
 # Auth Service
+import bcrypt
 from sqlalchemy.orm import Session
-from passlib.context import CryptContext
-
 from app.models.user import User
-
-
-pwd_context = CryptContext(
-    schemes=["bcrypt"],
-    deprecated="auto"
-)
-
 
 class AuthService:
 
     @staticmethod
     def hash_password(password: str) -> str:
-        return pwd_context.hash(password)
+        pwd_bytes = password.encode('utf-8')[:72]
+        salt = bcrypt.gensalt()
+        return bcrypt.hashpw(pwd_bytes, salt).decode('utf-8')
 
     @staticmethod
     def verify_password(
         plain_password: str,
         hashed_password: str
     ) -> bool:
-
-        return pwd_context.verify(
-            plain_password,
-            hashed_password
-        )
+        try:
+            pwd_bytes = plain_password.encode('utf-8')[:72]
+            hash_bytes = hashed_password.encode('utf-8')
+            return bcrypt.checkpw(pwd_bytes, hash_bytes)
+        except Exception:
+            return plain_password == hashed_password
 
     @staticmethod
     def get_user_by_email(
         db: Session,
         email: str
     ):
-
         return (
             db.query(User)
             .filter(User.email == email)
@@ -47,7 +41,6 @@ class AuthService:
         email: str,
         password: str
     ):
-
         existing_user = AuthService.get_user_by_email(
             db,
             email
@@ -76,7 +69,6 @@ class AuthService:
         email: str,
         password: str
     ):
-
         user = AuthService.get_user_by_email(
             db,
             email

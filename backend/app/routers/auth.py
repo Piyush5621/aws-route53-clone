@@ -21,6 +21,8 @@ from app.schemas.auth import (
 )
 
 from app.services.auth_service import AuthService
+from app.dependencies.auth import get_current_user
+from app.models.user import User
 
 
 router = APIRouter(
@@ -107,3 +109,13 @@ def login(
         "token_type": "bearer",
         "user": user
     }
+
+
+@router.get(
+    "/me",
+    response_model=UserResponse
+)
+def get_me(
+    current_user: User = Depends(get_current_user)
+):
+    return current_user
