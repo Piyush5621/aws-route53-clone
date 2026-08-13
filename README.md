@@ -15,8 +15,8 @@ Scope is locked to the assignment brief. Nothing added beyond it. This document 
 | **0** | **Project Foundation** | ✅ **Completed** |
 | **1** | **Authentication** | ✅ **Completed** |
 | **2** | **Hosted Zones** | ✅ **Completed** |
-| **3** | **DNS Records** | ⏳ **Next Up** |
-| **4** | **Route53 UI** | Pending |
+| **3** | **DNS Records** | ✅ **Completed** |
+| **4** | **Route53 UI** | ⏳ **Next Up** |
 | **5** | **Search/Filters/Pagination/UX** | Pending |
 | **6** | **Mocked Route53 Sections** | Pending |
 | **7** | **Polish/Security/Performance** | Pending |
@@ -44,9 +44,9 @@ Scope is locked to the assignment brief. Nothing added beyond it. This document 
 - Frontend: API client functions (`fetchHostedZones`, `createHostedZone`, `fetchHostedZoneById`, `updateHostedZone`, `deleteHostedZone`)
 - Commit: `feat: implement hosted zone crud`
 
-### PHASE 3 — DNS Records
-- Backend: DNS Record model (FK to Hosted Zone) + CRUD API endpoints + type validation
-- Frontend: records list within a zone, create/edit/delete flows (API-wired)
+### PHASE 3 — DNS Records (Completed)
+- Backend: DNS Record model (FK to Hosted Zone) + CRUD API endpoints (`/api/hosted-zones/{zone_id}/records` & `/api/records/{record_id}`), record type validation (A, AAAA, CNAME, TXT, MX, NS, SOA, PTR, SRV, CAA), hosted zone record count updates
+- Frontend: API client functions (`fetchZoneRecords`, `createDNSRecord`, `fetchDNSRecordById`, `updateDNSRecord`, `deleteDNSRecord`)
 - Commit: `feat: implement dns record crud`
 
 ### PHASE 4 — Route53 UI
