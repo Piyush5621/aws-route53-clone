@@ -13,8 +13,8 @@ Scope is locked to the assignment brief. Nothing added beyond it. This document 
 | Phase | Name | Status |
 |---|---|---|
 | **0** | **Project Foundation** | ✅ **Completed** |
-| **1** | **Authentication** | ⏳ **Next Up** |
-| **2** | **Hosted Zones** | Pending |
+| **1** | **Authentication** | ✅ **Completed** |
+| **2** | **Hosted Zones** | ⏳ **Next Up** |
 | **3** | **DNS Records** | Pending |
 | **4** | **Route53 UI** | Pending |
 | **5** | **Search/Filters/Pagination/UX** | Pending |
@@ -34,9 +34,9 @@ Scope is locked to the assignment brief. Nothing added beyond it. This document 
 - Base folder structure for both
 - Commit: `chore: initialize project foundation`
 
-### PHASE 1 — Authentication
-- Backend: mocked login endpoint, session/token issuance, logout, session validation
-- Frontend: login page, auth context/provider, protected routes, logout action
+### PHASE 1 — Authentication (Completed)
+- Backend: login (`/api/auth/login`), registration (`/api/auth/register`), current user (`/api/auth/me`), JWT token issuance, password hashing via bcrypt
+- Frontend: login/register page, auth helper, session storage, protected route handling
 - Commit: `feat: implement authentication`
 
 ### PHASE 2 — Hosted Zones
