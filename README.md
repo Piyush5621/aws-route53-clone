@@ -16,8 +16,8 @@ Scope is locked to the assignment brief. Nothing added beyond it. This document 
 | **1** | **Authentication** | ✅ **Completed** |
 | **2** | **Hosted Zones** | ✅ **Completed** |
 | **3** | **DNS Records** | ✅ **Completed** |
-| **4** | **Route53 UI** | ⏳ **Next Up** |
-| **5** | **Search/Filters/Pagination/UX** | Pending |
+| **4** | **Route53 UI** | ✅ **Completed** |
+| **5** | **Search/Filters/Pagination/UX** | ⏳ **Next Up** |
 | **6** | **Mocked Route53 Sections** | Pending |
 | **7** | **Polish/Security/Performance** | Pending |
 | **8** | **Documentation** | Pending |
@@ -49,12 +49,13 @@ Scope is locked to the assignment brief. Nothing added beyond it. This document 
 - Frontend: API client functions (`fetchZoneRecords`, `createDNSRecord`, `fetchDNSRecordById`, `updateDNSRecord`, `deleteDNSRecord`)
 - Commit: `feat: implement dns record crud`
 
-### PHASE 4 — Route53 UI
-- Route53-style navigation/sidebar/layout
-- Route53-styled tables for zones and records
-- Route53-styled forms and modals for create/edit
-- Toast/notification system
-- Commit: `feat: build route53 hosted zones ui`, `feat: build dns records ui`
+### PHASE 4 — Route53 UI (Completed)
+- Route53-style header, collapsible sidebar, and layout
+- AWS CloudScape-styled tables for hosted zones and DNS records
+- Route53-styled forms and modals for zone creation, record creation, inline editing, and deletion
+- Toast notification system (`useToast` hook & ToastProvider)
+- Dashboard page with service summary stats and quick actions
+- Commit: `feat: build route53 hosted zones ui and dns records ui`
 
 ### PHASE 5 — Search / Filters / Pagination / UX
 - Search on hosted zones list
