@@ -9,6 +9,8 @@ from fastapi import (
 from sqlalchemy.orm import Session
 
 from app.database import get_db
+from app.dependencies.auth import get_current_user
+from app.models.user import User
 from app.schemas.hosted_zone import (
     HostedZoneCreate,
     HostedZoneResponse,
@@ -23,11 +25,6 @@ router = APIRouter(
 )
 
 
-# Temporary mocked user.
-# Authentication will replace this later.
-MOCK_USER_ID = 1
-
-
 @router.post(
     "",
     response_model=HostedZoneResponse,
@@ -35,22 +32,19 @@ MOCK_USER_ID = 1
 )
 def create_hosted_zone(
     data: HostedZoneCreate,
+    current_user: User = Depends(get_current_user),
     db: Session = Depends(get_db),
 ):
-
     try:
-
         return HostedZoneService.create_hosted_zone(
             db=db,
-            user_id=MOCK_USER_ID,
+            user_id=current_user.id,
             name=data.name,
             zone_type=data.zone_type,
             comment=data.comment,
             private=data.private,
         )
-
     except ValueError as error:
-
         raise HTTPException(
             status_code=409,
             detail=str(error),
@@ -62,15 +56,13 @@ def create_hosted_zone(
     response_model=list[HostedZoneResponse],
 )
 def list_hosted_zones(
-    search: Optional[str] = Query(
-        default=None
-    ),
+    search: Optional[str] = Query(default=None),
+    current_user: User = Depends(get_current_user),
     db: Session = Depends(get_db),
 ):
-
     return HostedZoneService.get_hosted_zones(
         db=db,
-        user_id=MOCK_USER_ID,
+        user_id=current_user.id,
         search=search,
     )
 
@@ -81,17 +73,16 @@ def list_hosted_zones(
 )
 def get_hosted_zone(
     zone_id: int,
+    current_user: User = Depends(get_current_user),
     db: Session = Depends(get_db),
 ):
-
     hosted_zone = HostedZoneService.get_hosted_zone(
         db=db,
         zone_id=zone_id,
-        user_id=MOCK_USER_ID,
+        user_id=current_user.id,
     )
 
     if not hosted_zone:
-
         raise HTTPException(
             status_code=404,
             detail="Hosted zone not found",
@@ -107,17 +98,16 @@ def get_hosted_zone(
 def update_hosted_zone(
     zone_id: int,
     data: HostedZoneUpdate,
+    current_user: User = Depends(get_current_user),
     db: Session = Depends(get_db),
 ):
-
     hosted_zone = HostedZoneService.get_hosted_zone(
         db=db,
         zone_id=zone_id,
-        user_id=MOCK_USER_ID,
+        user_id=current_user.id,
     )
 
     if not hosted_zone:
-
         raise HTTPException(
             status_code=404,
             detail="Hosted zone not found",
@@ -136,17 +126,16 @@ def update_hosted_zone(
 )
 def delete_hosted_zone(
     zone_id: int,
+    current_user: User = Depends(get_current_user),
     db: Session = Depends(get_db),
 ):
-
     hosted_zone = HostedZoneService.get_hosted_zone(
         db=db,
         zone_id=zone_id,
-        user_id=MOCK_USER_ID,
+        user_id=current_user.id,
     )
 
     if not hosted_zone:
-
         raise HTTPException(
             status_code=404,
             detail="Hosted zone not found",
