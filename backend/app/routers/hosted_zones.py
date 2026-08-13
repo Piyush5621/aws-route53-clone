@@ -1,10 +1,10 @@
 from typing import Optional
-
 from fastapi import (
     APIRouter,
     Depends,
     HTTPException,
     Query,
+    Response,
 )
 from sqlalchemy.orm import Session
 
@@ -17,6 +17,7 @@ from app.schemas.hosted_zone import (
     HostedZoneUpdate,
 )
 from app.services.hosted_zone_service import HostedZoneService
+from app.services.record_service import RecordService
 
 
 router = APIRouter(
@@ -147,3 +148,35 @@ def delete_hosted_zone(
     )
 
     return None
+
+
+# BONUS FEATURE: Export Hosted Zone & Records as BIND Format
+@router.get("/{zone_id}/export/bind")
+def export_zone_bind(
+    zone_id: int,
+    current_user: User = Depends(get_current_user),
+    db: Session = Depends(get_db),
+):
+    hosted_zone = HostedZoneService.get_hosted_zone(db=db, zone_id=zone_id, user_id=current_user.id)
+    if not hosted_zone:
+        raise HTTPException(status_code=404, detail="Hosted zone not found")
+
+    records = RecordService.get_records_by_zone(db=db, user_id=current_user.id, hosted_zone_id=zone_id)
+    
+    bind_lines = [
+        f"; BIND Zone File for {hosted_zone.name}",
+        f"; Exported from AWS Route 53 Clone",
+        f"$ORIGIN {hosted_zone.name}.",
+        f"$TTL 300",
+        ""
+    ]
+
+    for r in records or []:
+        bind_lines.append(f"{r.name:<30} IN  {r.ttl:<6} {r.record_type:<8} {r.value}")
+
+    bind_content = "\n".join(bind_lines)
+    return Response(
+        content=bind_content,
+        media_type="text/plain",
+        headers={"Content-Disposition": f"attachment; filename={hosted_zone.name}.zone"}
+    )
