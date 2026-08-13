@@ -17,8 +17,8 @@ Scope is locked to the assignment brief. Nothing added beyond it. This document 
 | **2** | **Hosted Zones** | ✅ **Completed** |
 | **3** | **DNS Records** | ✅ **Completed** |
 | **4** | **Route53 UI** | ✅ **Completed** |
-| **5** | **Search/Filters/Pagination/UX** | ⏳ **Next Up** |
-| **6** | **Mocked Route53 Sections** | Pending |
+| **5** | **Search/Filters/Pagination/UX** | ✅ **Completed** |
+| **6** | **Mocked Route53 Sections** | ⏳ **Next Up** |
 | **7** | **Polish/Security/Performance** | Pending |
 | **8** | **Documentation** | Pending |
 | **9** | **Deployment** | Pending |
@@ -57,10 +57,11 @@ Scope is locked to the assignment brief. Nothing added beyond it. This document 
 - Dashboard page with service summary stats and quick actions
 - Commit: `feat: build route53 hosted zones ui and dns records ui`
 
-### PHASE 5 — Search / Filters / Pagination / UX
-- Search on hosted zones list
-- Search + filter (by record type) on DNS records list
-- Pagination on both lists
+### PHASE 5 — Search / Filters / Pagination / UX (Completed)
+- SearchBar component with property filter clearing
+- Pagination component with rows-per-page selection (5, 10, 25, 50) and page navigation controls
+- Integrated search and pagination into Hosted Zones list page
+- Integrated search, record type filtering, and pagination into Hosted Zone detail DNS Records view
 - Commit: `feat: add search and pagination`
 
 ### PHASE 6 — Mocked Route53 Sections
