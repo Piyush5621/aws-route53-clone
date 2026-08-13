@@ -6,6 +6,8 @@ from app import models
 
 from app.routers.hosted_zones import router as hosted_zone_router
 from app.routers.auth import router as auth_router
+from app.routers.records import router as records_router
+
 # Create database tables
 Base.metadata.create_all(bind=engine)
 
@@ -19,6 +21,7 @@ app = FastAPI(
 
 app.include_router(auth_router)
 app.include_router(hosted_zone_router)
+app.include_router(records_router)
 # Allow frontend to communicate with backend
 app.add_middleware(
     CORSMiddleware,
