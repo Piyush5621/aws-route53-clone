@@ -14,8 +14,8 @@ Scope is locked to the assignment brief. Nothing added beyond it. This document 
 |---|---|---|
 | **0** | **Project Foundation** | ✅ **Completed** |
 | **1** | **Authentication** | ✅ **Completed** |
-| **2** | **Hosted Zones** | ⏳ **Next Up** |
-| **3** | **DNS Records** | Pending |
+| **2** | **Hosted Zones** | ✅ **Completed** |
+| **3** | **DNS Records** | ⏳ **Next Up** |
 | **4** | **Route53 UI** | Pending |
 | **5** | **Search/Filters/Pagination/UX** | Pending |
 | **6** | **Mocked Route53 Sections** | Pending |
@@ -39,9 +39,9 @@ Scope is locked to the assignment brief. Nothing added beyond it. This document 
 - Frontend: login/register page, auth helper, session storage, protected route handling
 - Commit: `feat: implement authentication`
 
-### PHASE 2 — Hosted Zones
-- Backend: Hosted Zone model + CRUD API endpoints
-- Frontend: list, create, edit, delete flows (API-wired)
+### PHASE 2 — Hosted Zones (Completed)
+- Backend: Hosted Zone model + CRUD API endpoints (`/api/hosted-zones`), auto-creation of default NS and SOA records, SQLite persistence
+- Frontend: API client functions (`fetchHostedZones`, `createHostedZone`, `fetchHostedZoneById`, `updateHostedZone`, `deleteHostedZone`)
 - Commit: `feat: implement hosted zone crud`
 
 ### PHASE 3 — DNS Records
