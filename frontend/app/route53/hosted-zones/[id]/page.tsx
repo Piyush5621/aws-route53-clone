@@ -11,8 +11,7 @@ import {
   Globe,
   RefreshCw,
   X,
-  SlidersHorizontal,
-  Download
+  SlidersHorizontal
 } from "lucide-react";
 import {
   fetchHostedZoneById,
@@ -20,7 +19,6 @@ import {
   createDNSRecord,
   updateDNSRecord,
   deleteDNSRecord,
-  exportZoneBind,
   HostedZoneItem,
   DNSRecordItem
 } from "@/lib/api";
@@ -67,7 +65,7 @@ export default function HostedZoneDetailPage() {
       setRecords(r);
     } catch (err: any) {
       showToast("Error", err.message, "error");
-    } finally {
+    } fontally {
       setLoading(false);
     }
   };
@@ -76,16 +74,6 @@ export default function HostedZoneDetailPage() {
     loadData();
     setCurrentPage(1);
   }, [zoneId, search, typeFilter]);
-
-  const handleExportBind = async () => {
-    if (!zone) return;
-    try {
-      await exportZoneBind(zoneId, zone.name);
-      showToast("Zone File Exported", `Exported BIND file for ${zone.name}`, "success");
-    } catch (err: any) {
-      showToast("Export Failed", err.message, "error");
-    }
-  };
 
   const handleCreateRecord = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -174,14 +162,6 @@ export default function HostedZoneDetailPage() {
               title="Refresh"
             >
               <RefreshCw className={`w-4 h-4 ${loading ? "animate-spin" : ""}`} />
-            </button>
-            <button
-              onClick={handleExportBind}
-              className="flex items-center space-x-1.5 bg-[#161e2e] border border-[#384c63] hover:border-gray-400 text-gray-200 px-3 py-1.5 rounded font-semibold transition-colors"
-              title="Export BIND Zone File"
-            >
-              <Download className="w-4 h-4 text-[#ec7211]" />
-              <span>Export BIND File</span>
             </button>
             <button
               onClick={() => setShowCreateModal(true)}

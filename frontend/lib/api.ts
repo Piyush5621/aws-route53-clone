@@ -129,26 +129,6 @@ export async function deleteHostedZone(id: number): Promise<void> {
   }
 }
 
-// BONUS FEATURE: Export BIND Zone file
-export async function exportZoneBind(zoneId: number, zoneName: string): Promise<void> {
-  const token = getAuthToken();
-  const res = await fetch(`${API_BASE_URL}/hosted-zones/${zoneId}/export/bind`, {
-    headers: token ? { Authorization: `Bearer ${token}` } : {},
-  });
-
-  if (!res.ok) throw new Error("Failed to export BIND file");
-
-  const text = await res.text();
-  const blob = new Blob([text], { type: "text/plain" });
-  const url = window.URL.createObjectURL(blob);
-  const a = document.createElement("a");
-  a.href = url;
-  a.download = `${zoneName}.zone`;
-  document.body.appendChild(a);
-  a.click();
-  a.remove();
-}
-
 // DNS Records API
 export async function fetchZoneRecords(
   zoneId: number,
