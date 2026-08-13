@@ -8,10 +8,18 @@ export default function LoginPage() {
   const router = useRouter();
   const [isRegister, setIsRegister] = useState(false);
   const [name, setName] = useState("");
-  const [email, setEmail] = useState("admin@route53.com");
-  const [password, setPassword] = useState("securepassword123");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
+
+  const toggleMode = (registerState: boolean) => {
+    setIsRegister(registerState);
+    setError("");
+    setName("");
+    setEmail("");
+    setPassword("");
+  };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -78,7 +86,7 @@ export default function LoginPage() {
               required
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              placeholder="admin@route53.com"
+              placeholder="user@domain.com"
               className="w-full bg-[#0f1b2a] border border-gray-700 rounded p-2 text-white focus:outline-none focus:border-[#ec7211]"
             />
           </div>
@@ -110,7 +118,7 @@ export default function LoginPage() {
               Already have an account?{" "}
               <button
                 type="button"
-                onClick={() => setIsRegister(false)}
+                onClick={() => toggleMode(false)}
                 className="text-[#ec7211] underline hover:text-white"
               >
                 Sign In
@@ -121,7 +129,7 @@ export default function LoginPage() {
               Need an account?{" "}
               <button
                 type="button"
-                onClick={() => setIsRegister(true)}
+                onClick={() => toggleMode(true)}
                 className="text-[#ec7211] underline hover:text-white"
               >
                 Create One
