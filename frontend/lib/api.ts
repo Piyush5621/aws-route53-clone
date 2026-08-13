@@ -1,7 +1,7 @@
 // API Client for Hosted Zones & DNS Records
 import { getAuthToken } from "./auth";
 
-const API_BASE_URL = "http://localhost:8000/api";
+const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000/api";
 
 const getHeaders = () => {
   const token = getAuthToken();

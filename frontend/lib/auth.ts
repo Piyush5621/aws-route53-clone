@@ -13,6 +13,7 @@ export interface LoginResponse {
   user: AuthUser;
 }
 
+const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000/api";
 const TOKEN_KEY = "route53_auth_token";
 const USER_KEY = "route53_auth_user";
 
@@ -49,7 +50,7 @@ export const isAuthenticated = (): boolean => {
 };
 
 export async function loginUser(email: string, password: string): Promise<LoginResponse> {
-  const res = await fetch("http://localhost:8000/api/auth/login", {
+  const res = await fetch(`${API_BASE_URL}/auth/login`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ email, password }),
@@ -66,7 +67,7 @@ export async function loginUser(email: string, password: string): Promise<LoginR
 }
 
 export async function registerUser(name: string, email: string, password: string): Promise<AuthUser> {
-  const res = await fetch("http://localhost:8000/api/auth/register", {
+  const res = await fetch(`${API_BASE_URL}/auth/register`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ name, email, password }),
@@ -85,7 +86,7 @@ export async function fetchCurrentUser(): Promise<AuthUser | null> {
   if (!token) return null;
 
   try {
-    const res = await fetch("http://localhost:8000/api/auth/me", {
+    const res = await fetch(`${API_BASE_URL}/auth/me`, {
       headers: {
         Authorization: `Bearer ${token}`,
       },
