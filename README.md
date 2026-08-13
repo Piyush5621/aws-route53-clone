@@ -19,8 +19,8 @@ Scope is locked to the assignment brief. Nothing added beyond it. This document 
 | **4** | **Route53 UI** | ✅ **Completed** |
 | **5** | **Search/Filters/Pagination/UX** | ✅ **Completed** |
 | **6** | **Mocked Route53 Sections** | ✅ **Completed** |
-| **7** | **Polish/Security/Performance** | ⏳ **Next Up** |
-| **8** | **Documentation** | Pending |
+| **7** | **Polish/Security/Performance** | ✅ **Completed** |
+| **8** | **Documentation** | ⏳ **Next Up** |
 | **9** | **Deployment** | Pending |
 
 ---
@@ -68,14 +68,14 @@ Scope is locked to the assignment brief. Nothing added beyond it. This document 
 - Traffic Policies ("Coming Soon" preview with visual latency routing diagram)
 - Health Checks ("Coming Soon" preview with live endpoint status table)
 - Resolver ("Coming Soon" preview with inbound/outbound VPC endpoint cards)
-- Profiles ("Coming Soon" preview with multi-VPC policy distribution summary)
+- Profiles ("Coming Soon" preview with multi-VPC organization management preview)
 - Commit: `feat: add mocked coming-soon sections`
 
-### PHASE 7 — Polish / Security / Performance
-- Input validation hardening (frontend + backend)
-- Auth/session security review
-- Error handling consistency
-- Commit: `fix: resolve authentication issue`
+### PHASE 7 — Polish / Security / Performance (Completed)
+- Input validation hardening for domain names and record values
+- CORS configuration and HTTPBearer JWT error handling
+- Master test suite (`test_master.py`) covering all authentication, hosted zone CRUD, and DNS record CRUD flows
+- Commit: `fix: resolve authentication issue and harden input validation`
 
 ### PHASE 8 — Documentation
 - Finalize README with setup instructions, architecture overview, database schema, API overview
