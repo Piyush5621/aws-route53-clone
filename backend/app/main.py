@@ -28,11 +28,15 @@ app.include_router(records_router)
 # 4. Configure CORS middleware so Next.js frontend can communicate with backend
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:3000"],
+    allow_origins=[
+        "http://localhost:3000",
+        "https://aws-route53-clone.vercel.app"
+    ],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
 
 # 5. Health Check & Root Endpoints
 @app.get("/")
