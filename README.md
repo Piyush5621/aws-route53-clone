@@ -12,8 +12,8 @@ Scope is locked to the assignment brief. Nothing added beyond it. This document 
 
 | Phase | Name | Status |
 |---|---|---|
-| **0** | **Project Foundation** | **In Progress** |
-| **1** | **Authentication** | Pending |
+| **0** | **Project Foundation** | ✅ **Completed** |
+| **1** | **Authentication** | ⏳ **Next Up** |
 | **2** | **Hosted Zones** | Pending |
 | **3** | **DNS Records** | Pending |
 | **4** | **Route53 UI** | Pending |
@@ -27,12 +27,12 @@ Scope is locked to the assignment brief. Nothing added beyond it. This document 
 
 ## Phase Breakdown & Architecture
 
-### PHASE 0 — Project Foundation
+### PHASE 0 — Project Foundation (Completed)
 - Initialize git repo & `.gitignore`
 - Scaffold `frontend/` (Next.js + TypeScript)
-- Scaffold `backend/` (FastAPI + SQLite via SQLAlchemy/SQLModel)
+- Scaffold `backend/` (FastAPI + SQLite via SQLAlchemy)
 - Base folder structure for both
-- First commit: `chore: initialize project`
+- Commit: `chore: initialize project foundation`
 
 ### PHASE 1 — Authentication
 - Backend: mocked login endpoint, session/token issuance, logout, session validation
