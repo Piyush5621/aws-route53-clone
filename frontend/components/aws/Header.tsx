@@ -2,12 +2,13 @@
 
 import React, { useState } from "react";
 import Link from "next/link";
-import { Search, Bell, Globe, ChevronDown, ShieldCheck, HelpCircle } from "lucide-react";
+import { Search, Bell, Globe, ChevronDown, ShieldCheck, CheckCircle2, Info } from "lucide-react";
 import { getCurrentAuthUser, clearAuthSession } from "@/lib/auth";
 
 export const Header: React.FC = () => {
   const [showUserDropdown, setShowUserDropdown] = useState(false);
   const [showRegionDropdown, setShowRegionDropdown] = useState(false);
+  const [showNotificationDropdown, setShowNotificationDropdown] = useState(false);
   const user = getCurrentAuthUser();
 
   const handleLogout = () => {
@@ -44,7 +45,11 @@ export const Header: React.FC = () => {
         {/* Global/Region Scope Indicator */}
         <div className="relative">
           <button
-            onClick={() => setShowRegionDropdown(!showRegionDropdown)}
+            onClick={() => {
+              setShowRegionDropdown(!showRegionDropdown);
+              setShowNotificationDropdown(false);
+              setShowUserDropdown(false);
+            }}
             className="flex items-center space-x-1.5 hover:bg-[#161e2e] px-2 py-1 rounded transition-colors text-gray-200"
           >
             <Globe className="w-3.5 h-3.5 text-[#ec7211]" />
@@ -67,16 +72,69 @@ export const Header: React.FC = () => {
           )}
         </div>
 
-        {/* Notifications */}
-        <button className="p-1.5 hover:bg-[#161e2e] rounded text-gray-300 hover:text-white transition-colors relative" title="Notifications">
-          <Bell className="w-4 h-4" />
-          <span className="absolute top-1 right-1 w-1.5 h-1.5 bg-[#ec7211] rounded-full"></span>
-        </button>
+        {/* Notifications Bell Dropdown */}
+        <div className="relative">
+          <button
+            onClick={() => {
+              setShowNotificationDropdown(!showNotificationDropdown);
+              setShowRegionDropdown(false);
+              setShowUserDropdown(false);
+            }}
+            className="p-1.5 hover:bg-[#161e2e] rounded text-gray-300 hover:text-white transition-colors relative"
+            title="AWS Notifications"
+          >
+            <Bell className="w-4 h-4" />
+            <span className="absolute top-1 right-1 w-2 h-2 bg-[#ec7211] rounded-full animate-pulse"></span>
+          </button>
+
+          {showNotificationDropdown && (
+            <div className="absolute right-0 mt-1 w-80 bg-[#161e2e] border border-[#384c63] rounded shadow-2xl py-2 z-50 text-xs select-none">
+              <div className="px-3 py-2 border-b border-[#384c63] flex justify-between items-center">
+                <span className="font-bold text-white">AWS Service Notifications</span>
+                <span className="text-[10px] bg-[#ec7211]/20 text-[#ec7211] font-semibold px-1.5 py-0.5 rounded">
+                  2 New
+                </span>
+              </div>
+
+              <div className="divide-y divide-[#232f3e] max-h-64 overflow-y-auto">
+                <div className="p-3 hover:bg-[#232f3e] transition-colors">
+                  <div className="flex items-start space-x-2">
+                    <CheckCircle2 className="w-4 h-4 text-green-400 shrink-0 mt-0.5" />
+                    <div>
+                      <p className="font-semibold text-gray-200">DNS Edge Network Operational</p>
+                      <p className="text-[11px] text-gray-400 mt-0.5">
+                        All 300+ global edge resolution nodes are operating at 100% SLA uptime.
+                      </p>
+                      <span className="text-[10px] text-gray-500 mt-1 block">Just now</span>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="p-3 hover:bg-[#232f3e] transition-colors">
+                  <div className="flex items-start space-x-2">
+                    <Info className="w-4 h-4 text-blue-400 shrink-0 mt-0.5" />
+                    <div>
+                      <p className="font-semibold text-gray-200">Name Server Auto-Allocation</p>
+                      <p className="text-[11px] text-gray-400 mt-0.5">
+                        New Hosted Zones automatically receive 4 redundant NS records.
+                      </p>
+                      <span className="text-[10px] text-gray-500 mt-1 block">5m ago</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          )}
+        </div>
 
         {/* User IAM Profile Menu */}
         <div className="relative">
           <button
-            onClick={() => setShowUserDropdown(!showUserDropdown)}
+            onClick={() => {
+              setShowUserDropdown(!showUserDropdown);
+              setShowRegionDropdown(false);
+              setShowNotificationDropdown(false);
+            }}
             className="flex items-center space-x-1.5 hover:bg-[#161e2e] px-2 py-1 rounded transition-colors border border-transparent hover:border-[#384c63]"
           >
             <div className="w-5 h-5 rounded-full bg-[#ec7211] text-white flex items-center justify-center font-bold text-[10px]">
