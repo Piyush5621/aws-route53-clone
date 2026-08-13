@@ -2,9 +2,11 @@
 
 import React, { useEffect, useState } from "react";
 import Link from "next/link";
-import { Plus, Trash2, Search, Globe, RefreshCw, ExternalLink } from "lucide-react";
+import { Plus, Trash2, Globe, RefreshCw, ExternalLink } from "lucide-react";
 import { fetchHostedZones, deleteHostedZone, HostedZoneItem } from "@/lib/api";
 import { useToast } from "@/components/aws/Toast";
+import { SearchBar } from "@/components/aws/SearchBar";
+import { Pagination } from "@/components/aws/Pagination";
 
 export default function HostedZonesPage() {
   const [zones, setZones] = useState<HostedZoneItem[]>([]);
@@ -12,6 +14,10 @@ export default function HostedZonesPage() {
   const [search, setSearch] = useState("");
   const [selectedIds, setSelectedIds] = useState<number[]>([]);
   const { showToast } = useToast();
+
+  // Pagination State
+  const [currentPage, setCurrentPage] = useState(1);
+  const [pageSize, setPageSize] = useState(10);
 
   const loadZones = async () => {
     setLoading(true);
@@ -27,6 +33,7 @@ export default function HostedZonesPage() {
 
   useEffect(() => {
     loadZones();
+    setCurrentPage(1);
   }, [search]);
 
   const handleDeleteSelected = async () => {
@@ -46,10 +53,10 @@ export default function HostedZonesPage() {
   };
 
   const toggleSelectAll = () => {
-    if (selectedIds.length === zones.length) {
+    if (selectedIds.length === paginatedZones.length) {
       setSelectedIds([]);
     } else {
-      setSelectedIds(zones.map((z) => z.id));
+      setSelectedIds(paginatedZones.map((z) => z.id));
     }
   };
 
@@ -58,6 +65,10 @@ export default function HostedZonesPage() {
       prev.includes(id) ? prev.filter((item) => item !== id) : [...prev, id]
     );
   };
+
+  // Pagination calculation
+  const totalPages = Math.ceil(zones.length / pageSize) || 1;
+  const paginatedZones = zones.slice((currentPage - 1) * pageSize, currentPage * pageSize);
 
   return (
     <div className="space-y-4">
@@ -76,7 +87,7 @@ export default function HostedZonesPage() {
         <div className="flex items-center space-x-2">
           <button
             onClick={loadZones}
-            className="p-2 bg-[#161e2e] border border-[#384c63] rounded text-gray-300 hover:text-white hover:border-gray-400 transition-colors text-xs"
+            className="p-2 bg-[#161e2e] border border-[#384c63] rounded text-gray-300 hover:text-white transition-colors text-xs"
             title="Refresh list"
           >
             <RefreshCw className={`w-4 h-4 ${loading ? "animate-spin" : ""}`} />
@@ -106,24 +117,19 @@ export default function HostedZonesPage() {
       </div>
 
       {/* Control / Search Filter Bar */}
-      <div className="bg-[#161e2e] border border-[#384c63] rounded p-3 flex items-center justify-between">
-        <div className="flex items-center bg-[#0f1b2a] border border-[#384c63] rounded px-3 py-1.5 text-xs text-gray-300 w-80 focus-within:border-[#ec7211]">
-          <Search className="w-3.5 h-3.5 text-gray-400 mr-2 shrink-0" />
-          <input
-            type="text"
-            value={search}
-            onChange={(e) => setSearch(e.target.value)}
-            placeholder="Filter hosted zones by domain name..."
-            className="bg-transparent border-none outline-none text-xs text-white placeholder-gray-500 w-full"
-          />
-        </div>
+      <div className="bg-[#161e2e] border border-[#384c63] rounded p-3 flex flex-col sm:flex-row items-center justify-between gap-3">
+        <SearchBar
+          value={search}
+          onChange={setSearch}
+          placeholder="Search by domain name (e.g. example.com)..."
+        />
 
         <span className="text-xs text-gray-400">
-          Showing {zones.length} zone(s)
+          Showing {paginatedZones.length} of {zones.length} zone(s)
         </span>
       </div>
 
-      {/* AWS CloudScape Data Table */}
+      {/* AWS Data Table */}
       <div className="bg-[#161e2e] border border-[#384c63] rounded overflow-hidden shadow-lg">
         <table className="w-full text-left text-xs text-gray-200 border-collapse">
           <thead className="bg-[#232f3e] text-gray-300 border-b border-[#384c63] font-semibold text-[11px] uppercase tracking-wider select-none">
@@ -131,7 +137,7 @@ export default function HostedZonesPage() {
               <th className="p-3 w-10 text-center">
                 <input
                   type="checkbox"
-                  checked={zones.length > 0 && selectedIds.length === zones.length}
+                  checked={paginatedZones.length > 0 && selectedIds.length === paginatedZones.length}
                   onChange={toggleSelectAll}
                   className="rounded accent-[#ec7211]"
                 />
@@ -151,21 +157,15 @@ export default function HostedZonesPage() {
                   Loading hosted zones...
                 </td>
               </tr>
-            ) : zones.length === 0 ? (
+            ) : paginatedZones.length === 0 ? (
               <tr>
                 <td colSpan={7} className="p-8 text-center text-gray-400 space-y-2">
                   <p className="font-medium text-sm text-gray-300">No hosted zones found</p>
                   <p className="text-xs text-gray-500">Create your first public or private hosted zone to manage DNS records.</p>
-                  <Link
-                    href="/route53/hosted-zones/new"
-                    className="inline-block mt-2 bg-[#ec7211] hover:bg-[#eb5f07] text-white px-3 py-1.5 rounded text-xs font-semibold"
-                  >
-                    Create hosted zone
-                  </Link>
                 </td>
               </tr>
             ) : (
-              zones.map((zone) => (
+              paginatedZones.map((zone) => (
                 <tr
                   key={zone.id}
                   className={`hover:bg-[#1f2937] transition-colors ${
@@ -216,6 +216,19 @@ export default function HostedZonesPage() {
             )}
           </tbody>
         </table>
+
+        {/* Pagination Footer */}
+        <Pagination
+          currentPage={currentPage}
+          totalPages={totalPages}
+          pageSize={pageSize}
+          totalItems={zones.length}
+          onPageChange={setCurrentPage}
+          onPageSizeChange={(size) => {
+            setPageSize(size);
+            setCurrentPage(1);
+          }}
+        />
       </div>
     </div>
   );

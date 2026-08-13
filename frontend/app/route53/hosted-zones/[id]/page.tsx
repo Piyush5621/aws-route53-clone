@@ -8,11 +8,9 @@ import {
   Plus,
   Trash2,
   Edit2,
-  Search,
   Globe,
   RefreshCw,
   X,
-  CheckCircle2,
   SlidersHorizontal
 } from "lucide-react";
 import {
@@ -25,6 +23,8 @@ import {
   DNSRecordItem
 } from "@/lib/api";
 import { useToast } from "@/components/aws/Toast";
+import { SearchBar } from "@/components/aws/SearchBar";
+import { Pagination } from "@/components/aws/Pagination";
 
 export default function HostedZoneDetailPage() {
   const params = useParams();
@@ -36,6 +36,10 @@ export default function HostedZoneDetailPage() {
   const [search, setSearch] = useState("");
   const [typeFilter, setTypeFilter] = useState("");
   const { showToast } = useToast();
+
+  // Pagination State
+  const [currentPage, setCurrentPage] = useState(1);
+  const [pageSize, setPageSize] = useState(10);
 
   // Create Modal State
   const [showCreateModal, setShowCreateModal] = useState(false);
@@ -68,6 +72,7 @@ export default function HostedZoneDetailPage() {
 
   useEffect(() => {
     loadData();
+    setCurrentPage(1);
   }, [zoneId, search, typeFilter]);
 
   const handleCreateRecord = async (e: React.FormEvent) => {
@@ -124,6 +129,10 @@ export default function HostedZoneDetailPage() {
     }
   };
 
+  // Pagination Calculation
+  const totalPages = Math.ceil(records.length / pageSize) || 1;
+  const paginatedRecords = records.slice((currentPage - 1) * pageSize, currentPage * pageSize);
+
   return (
     <div className="space-y-6 text-xs">
       {/* Navigation & Summary Header */}
@@ -167,19 +176,14 @@ export default function HostedZoneDetailPage() {
 
       {/* Control / Filter Bar */}
       <div className="bg-[#161e2e] border border-[#384c63] rounded p-3 flex flex-col sm:flex-row items-center justify-between gap-3">
-        <div className="flex items-center space-x-3 w-full sm:w-auto">
-          <div className="flex items-center bg-[#0f1b2a] border border-[#384c63] rounded px-3 py-1.5 text-xs text-gray-300 w-64 focus-within:border-[#ec7211]">
-            <Search className="w-3.5 h-3.5 text-gray-400 mr-2 shrink-0" />
-            <input
-              type="text"
-              value={search}
-              onChange={(e) => setSearch(e.target.value)}
-              placeholder="Search records by record name..."
-              className="bg-transparent border-none outline-none text-xs text-white placeholder-gray-500 w-full"
-            />
-          </div>
+        <div className="flex flex-wrap items-center gap-3 w-full sm:w-auto">
+          <SearchBar
+            value={search}
+            onChange={setSearch}
+            placeholder="Search records by name..."
+          />
 
-          <div className="flex items-center space-x-1 bg-[#0f1b2a] border border-[#384c63] rounded px-2.5 py-1 text-xs">
+          <div className="flex items-center space-x-1.5 bg-[#0f1b2a] border border-[#384c63] rounded px-2.5 py-1.5 text-xs">
             <SlidersHorizontal className="w-3.5 h-3.5 text-gray-400" />
             <select
               value={typeFilter}
@@ -194,12 +198,13 @@ export default function HostedZoneDetailPage() {
               <option value="MX">MX</option>
               <option value="NS">NS</option>
               <option value="SOA">SOA</option>
+              <option value="CAA">CAA</option>
             </select>
           </div>
         </div>
 
         <span className="text-gray-400">
-          Showing {records.length} record(s)
+          Showing {paginatedRecords.length} of {records.length} record(s)
         </span>
       </div>
 
@@ -223,14 +228,14 @@ export default function HostedZoneDetailPage() {
                   Loading DNS records...
                 </td>
               </tr>
-            ) : records.length === 0 ? (
+            ) : paginatedRecords.length === 0 ? (
               <tr>
                 <td colSpan={6} className="p-8 text-center text-gray-400">
                   No DNS records match your filter criteria.
                 </td>
               </tr>
             ) : (
-              records.map((r) => (
+              paginatedRecords.map((r) => (
                 <tr key={r.id} className="hover:bg-[#1f2937] transition-colors">
                   <td className="p-3 font-semibold text-white font-mono">{r.name}</td>
                   <td className="p-3">
@@ -268,6 +273,19 @@ export default function HostedZoneDetailPage() {
             )}
           </tbody>
         </table>
+
+        {/* Pagination Footer */}
+        <Pagination
+          currentPage={currentPage}
+          totalPages={totalPages}
+          pageSize={pageSize}
+          totalItems={records.length}
+          onPageChange={setCurrentPage}
+          onPageSizeChange={(size) => {
+            setPageSize(size);
+            setCurrentPage(1);
+          }}
+        />
       </div>
 
       {/* Create Record Modal */}
