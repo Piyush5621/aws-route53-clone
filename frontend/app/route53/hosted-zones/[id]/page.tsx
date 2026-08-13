@@ -65,7 +65,7 @@ export default function HostedZoneDetailPage() {
       setRecords(r);
     } catch (err: any) {
       showToast("Error", err.message, "error");
-    } fontally {
+    } finally {
       setLoading(false);
     }
   };
