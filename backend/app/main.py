@@ -2,16 +2,19 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
-from app.database import Base, engine
+from app.database import Base, engine, SessionLocal
 from app import models
+from app.seed import seed_demo_data
 
 # Import modular API routers
 from app.routers.hosted_zones import router as hosted_zone_router
 from app.routers.auth import router as auth_router
 from app.routers.records import router as records_router
 
-# 1. Automatically create database tables if they don't exist
+# 1. Automatically create database tables if they don't exist & seed demo data
 Base.metadata.create_all(bind=engine)
+with SessionLocal() as db_session:
+    seed_demo_data(db_session)
 
 # 2. Create FastAPI application instance
 app = FastAPI(
